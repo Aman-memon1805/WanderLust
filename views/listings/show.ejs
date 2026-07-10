@@ -1,0 +1,174 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<body>
+  <script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+  </script>
+
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+        
+        <!-- Title Heading -->
+        <h1 class="mb-4 text-center text-md-start"><%= listing.title %></h1>
+
+        <!-- Main Listing Card Container -->
+        <div class="card shadow-sm border-0 overflow-hidden">
+          <div class="row g-0">
+            
+            <!-- Left Side: Listing Image (Stays full width on mobile, takes 50% width on desktop) -->
+            <div class="col-12 col-md-6">
+              <img
+                src="<%= listing.image.url %>"
+                class="img-fluid w-100 h-100 rounded-3"
+                style="object-fit: cover; min-height: 350px; max-height: 500px;"
+                alt="listing-img"
+              />
+            </div>
+
+            <!-- Right Side: Listing Text Details & Action Buttons -->
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-between p-4 bg-white">
+              <div>
+                <h3 class="h4 mb-3 d-none d-md-block"><%= listing.title %></h3>
+                <h6>Host : @<%= listing.owner.username %></h6>
+                <p class="text-secondary mb-4 fs-6 leading-relaxed">
+                  <i><%= listing.description %></i>
+                </p>
+                
+                <hr class="text-muted my-3">
+
+                <!-- Pricing and Location Details -->
+                <div class="mb-4">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="fs-4 fw-bold text-dark">₹ <%= listing.price.toLocaleString("en-IN") %></span>
+                  </div>
+                  <div class="text-muted fs-6">
+                    <%= listing.location %>, <%= listing.country %>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons: 100% width on mobile, locked to matching sizes on desktop -->
+              <div class="d-flex gap-3 pt-3 border-top mt-auto">
+                
+                <% if(currUser && currUser._id.equals(listing.owner._id)) { %> 
+ 
+                <!-- Edit Button Link Wrapper -->
+                <div class="flex-grow-1 flex-md-grow-0">
+                  <a href="http://localhost:8080/listings/<%=listing._id%>/edit" class="btn btn-outline-dark px-4 py-2 w-100 text-center" style="min-width: 140px;">
+                    Edit Details
+                  </a>
+                </div>
+
+                <!-- Delete Button Form Wrapper -->
+                <div class="flex-grow-1 flex-md-grow-0">
+                  <form action="/listings/<%=listing._id%>?_method=DELETE" method="post" class="m-0 w-100">
+                    <button class="btn btn-outline-danger px-4 py-2 w-100" style="min-width: 140px;">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+                <% } %>
+             </div>
+
+            </div>
+
+          </div>
+        </div>
+        
+        <div class="my-4">
+          <h4 class="mb-3">Reviews</h4>
+          <div class="row g-3">
+            <% if(!listing.reviews.length) { %>
+              <p style="opacity: 0.75;">No reviews yet!</p>
+            <% } %>
+            <% for (let review of listing.reviews) { %>
+            <div class="col-12 col-md-6">
+              <div class="card border-0 shadow-sm h-100 p-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; font-size: 13px; font-weight: 500; flex-shrink: 0;">
+                    <%= review.author.username.charAt(0).toUpperCase() %>
+                  </div>
+                  <div>
+                    <p class="mb-0 fw-medium" style="font-size: 14px;"> @<%= review.author.username %></p>
+                    <div class="d-flex align-items-center gap-1">
+                      <% for(let i = 1; i <= 5; i++) { %>
+                      <i class="fa-star fa-xs <%= i <= review.rating ? 'fa-solid text-warning' : 'fa-regular text-muted' %>"></i>
+                      <% } %>
+                      <span class="text-muted ms-1" style="font-size: 12px;"><%= review.rating %> / 5</span>
+                    </div>
+                  </div>
+                </div>
+               <p class="mb-0 text-secondary" style="font-size: 14px; line-height: 1.6;"><%= review.comment %></p>
+                  <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                    <form method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>/delete?_method=DELETE" class="mt-1">
+                      <button class="btn btn-outline-danger mt-1 btn-sm" style="min-width: 50px;">
+                        Delete
+                      </button>
+                   </form>
+                  <% } %>
+              </div>
+           </div>
+           <% } %>
+         </div>
+       </div>
+        
+
+        <!-- Responsive Feedback Section -->
+       <% if(currUser) {%> 
+        <div class="card shadow-sm border-0 p-4 bg-white">
+          <h4 class="mb-4 text-center text-md-start">Leave your feedback please!</h4>
+          
+          <!-- Wrapped in a form targeting your sub-routing schema -->
+          <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+            
+            <!-- Rating Input Row -->
+            <!-- <div class="mb-3 col-12 col-md-6 col-lg-4"> 
+              <label for="rating" class="form-label fw-semibold">Rating</label>
+              <input type="range" name="review[rating]" min="1" max="5" id="rating" class="form-range">
+            </div>  -->
+            <div class="mb-3 col-12 col-md-6 col-lg-4"> 
+              <label for="rating" class="form-label fw-semibold">Rating</label>
+              <fieldset class="starability-slot" >
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+             </fieldset>
+            </div>
+            <!-- Comment Textarea Row -->
+            <div class="mb-4">
+              <label for="comment" class="form-label fw-semibold">Comment</label>
+              <textarea name="review[comment]" id="comment" rows="4" class="form-control focus-red" placeholder="Write your review here..." required></textarea>
+              <div class="invalid-feedback">Please add some comments before submitting.</div>
+            </div>
+            
+            <!-- Submit Button Row -->
+            <div class="text-end text-md-start">
+              <button class="btn btn-outline-danger px-4 py-2 w-100 w-md-auto" style="min-width: 140px;">
+                Submit Review
+              </button>
+            </div>
+
+          </form>
+        </div>
+        <% } %>
+        <div class="col-12 col-xl-15 mt-1">
+          <h3>Where you'll be</h3>
+          <div id="map">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/map.js"></script>
+</body>
+

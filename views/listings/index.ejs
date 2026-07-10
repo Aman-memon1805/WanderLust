@@ -1,0 +1,99 @@
+<% layout("layouts/boilerplate.ejs") %>
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 id="typewriter"><span id="typed-text"></span><span class="cursor">|</span></h1>
+    <p>Discover unique stays and experiences across the globe</p>
+  </div>
+</div>
+
+<!-- Filter Panel -->
+<div class="filter-bar ms-3">
+  <div class="filter-search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Search by title or location..." value="<%= currSearch || '' %>">
+  </div>
+
+  <div class="filter-categories ms-3">
+    <a class="filter-btn <%= !currCategory ? 'active' : '' %>" style="opacity: 1;" href="/listings">
+      All
+    </a>
+    <a href="/listings?category=Beach" class="filter-btn <%= currCategory === 'Beach' ? 'active' : '' %>">
+      <i class="fa-solid fa-umbrella-beach"></i> Beach
+    </a>
+    <a href="/listings?category=Mountains" class="filter-btn <%= currCategory === 'Mountains' ? 'active' : '' %>">
+      <i class="fa-solid fa-mountain"></i> Mountains
+    </a>
+    <a href="/listings?category=City" class="filter-btn <%= currCategory === 'City' ? 'active' : '' %>">
+      <i class="fa-solid fa-city"></i> City
+    </a>
+    <a href="/listings?category=Countryside" class="filter-btn <%= currCategory === 'Countryside' ? 'active' : '' %>">
+      <i class="fa-solid fa-flag-usa"></i> Countryside
+    </a>
+    <a href="/listings?category=Luxury" class="filter-btn <%= currCategory === 'Luxury' ? 'active' : '' %>">
+      <i class="fa-solid fa-crown"></i> Luxury
+    </a>
+    <a href="/listings?category=Cabins" class="filter-btn <%= currCategory === 'Cabins' ? 'active' : '' %>">
+      <i class="fa-solid fa-cable-car"></i> Cabins
+    </a>
+    <a href="/listings?category=Islands" class="filter-btn <%= currCategory === 'Islands' ? 'active' : '' %>">
+      <i class="fa-solid fa-person-swimming"></i> Islands
+    </a>
+    <a href="/listings?category=Arctics" class="filter-btn <%= currCategory === 'Arctics' ? 'active' : '' %>">
+      <i class="fa-solid fa-snowflake"></i> Arctics
+    </a>
+  </div>
+</div>  
+
+
+ <!-- listings -->
+<div class="listings-grid">
+  <% for(let listing of allListings) { %> 
+    <a href="/listings/<%= listing._id %>" class="listing-card">
+      <div class="card-img-wrap">
+        <img src="<%= listing.image.url %>" class="card-img" alt="<%= listing.title %>">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= listing.title %></h5>
+        <p class="card-location">
+          <i class="ti ti-map-pin"></i> <%= listing.location %>, <%= listing.country %>
+        </p>
+        <p class="card-price">
+          ₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span>
+        </p>
+      </div>
+    </a> 
+  <% } %>
+</div>
+
+<% if(allListings.length === 0) { %>
+    <div class="no-results">
+      <div>
+        <i class="fa-regular fa-face-sad-tear" style="color: rgb(177, 151, 252);"></i>
+        <h4>No listing found!</h4>
+      </div>
+        <p>Try searching for something else or <a href="/listings">view all listings</a>.</p>
+    </div>
+<% } %>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+
+searchInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        const url = new URL(window.location.href);
+        const value = e.target.value.trim();
+        if (value) {
+            url.searchParams.set("search", value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        window.location.href = url.toString();
+    }
+});
+
+
+  document.querySelector(".navbar").classList.add("has-hero");
+
+</script>

@@ -1,0 +1,103 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<body>
+  <h1 style="color: #fe424d;">Create new Listing :</h1>
+
+  <form method="post" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="title here"
+        name="title"
+        required
+      />
+      <label for="floatingInput">Title</label>
+      <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Enter Title here!
+    </div>
+    </div>
+    <!-- Title : <input type="text" name="title"> -->
+    <!-- Image : <input type="file" name="url" /> <br /><br /> -->
+     <div class="form-floating mb-3">
+      <input
+        type="file"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="title here"
+        name="image"
+        required
+      />
+      <label for="floatingInput"></label>
+    </div>
+    
+    <div class="form-floating">
+      <textarea
+        class="form-control focus-red"
+        placeholder="Leave a comment here"
+        id="floatingTextarea2"
+        style="height: 100px",
+        name="description"
+        required
+      ></textarea>
+      <label for="floatingTextarea2">Description</label>
+      <div class="invalid-feedback">
+      Write short description!
+    </div>
+    </div>
+    <!-- <p>Describe :</p>
+    <textarea name="description" rows="10" cols="100"></textarea> -->
+    <br>
+    <div class="form-floating mb-3">
+      <input
+
+      class="form-control focus-red"
+        id="floatingInput"
+        name="price"
+        placeholder="enter price"
+        required
+      />
+      <label for="floatingInput">Price</label>
+      <div class="invalid-feedback">
+      Price should be valid!
+    </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        name="location"
+        placeholder="enter location"
+        required
+      />
+      <label for="floatingInput">Location</label>
+      <div class="invalid-feedback">
+      Location should be valid!
+    </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        name="country"
+        placeholder="enter country"
+        required
+      />
+      <div class="invalid-feedback">
+      Country name should be valid!
+    </div>
+      <label for="floatingInput">Country</label>
+    </div>
+    <!-- Price : <input type="number" name="price" /> <br /><br />
+    Location : <input type="text" name="location" /> <br /><br />
+    Country : <input type="text" name="country" /> <br /><br /> -->
+
+    <button type="submit" class="btn btn-danger">Post</button>
+  </form>
+</body>

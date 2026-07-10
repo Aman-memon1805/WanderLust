@@ -1,0 +1,106 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<body>
+  <h1 style="color: #fe424d">Edit your listing :</h1>
+  <br />
+
+  <form
+    method="post"
+    action="/listings/<%=listing._id%>?_method=PATCH"
+    novalidate
+    class="needs-validation"
+    enctype="multipart/form-data"
+  >
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="title here"
+        name="title"
+        value="<%=listing.title%>"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Enter Title here!</div>
+      <label for="floatingInput">Title</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <a
+        href="<%= listing.image.url %>"
+        target="_blank"
+        class="preview-text mb-3"
+        >Preview Old Image</a
+      >
+      <input
+        type="file"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="title here"
+        name="image"
+        value="<%=listing.image.url%>"
+      />
+      <label for="floatingInput"></label>
+    </div>
+
+    <div class="form-floating">
+      <textarea
+        class="form-control focus-red"
+        placeholder="Leave a comment here"
+        id="floatingTextarea2"
+        style="height: 100px"
+        ,
+        name="description"
+        required
+      >
+<%= listing.description %></textarea
+      >
+      <label for="floatingTextarea2"><%= listing.description %></label>
+      <div class="invalid-feedback">Write short description!</div>
+    </div>
+    <!-- <p>Describe :</p>
+    <textarea name="description" rows="10" cols="100"></textarea> -->
+    <br />
+    <div class="form-floating mb-3">
+      <input
+        type="number"
+        class="form-control focus-red"
+        id="floatingInput"
+        name="price"
+        placeholder="enter price"
+        value="<%=listing.price%>"
+        required
+      />
+      <div class="invalid-feedback">Price should be valid!</div>
+      <label for="floatingInput">Price</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        name="location"
+        placeholder="enter location"
+        value="<%=listing.location%>"
+        required
+      />
+      <div class="invalid-feedback">Location should be valid!</div>
+      <label for="floatingInput">Location</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        name="country"
+        placeholder="enter country"
+        value="<%=listing.country%>"
+        required
+      />
+      <div class="invalid-feedback">Country name should be valid!</div>
+      <label for="floatingInput">Country</label>
+    </div>
+    <button type="submit" class="btn btn-danger">Add</button>
+  </form>
+</body>

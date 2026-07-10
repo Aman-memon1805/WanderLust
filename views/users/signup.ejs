@@ -1,0 +1,48 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<h1 style="color: #fe424d;" class="mt-1">Sign up on WanderLust</h1>
+
+  <form method="post" action="/users/signup" novalidate class="needs-validation">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="username here"
+        name="username"
+        required
+      />
+      <label for="floatingInput">Username</label>
+      <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Enter username here!
+    </div>
+    </div>
+     <div class="form-floating mb-3">
+      <input
+        type="email"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="email here"
+        name="email"
+        required
+      />
+      <label for="floatingInput">Email</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input
+        type="password"
+        class="form-control focus-red"
+        id="floatingInput"
+        placeholder="password here"
+        name="password"
+        required
+      />
+      <label for="floatingInput">Password</label>
+    </div>
+
+    <button type="submit" class="btn btn-outline-danger">Sign-up</button>
+  </form>
