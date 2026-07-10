@@ -31,7 +31,7 @@ module.exports.createNewListing = async (req, res, next) => {
   let filename = req.file.filename;
 
   let resp = await geocodingClient.forwardGeocode({
-    query: location + country,
+    query: `${location} + ${country}`,
     limit: 1
   }).send();
 
@@ -78,7 +78,7 @@ module.exports.updateListing = async (req, res) => {
   let { title, description, price, location, country } = req.body; 
 
   let resp = await geocodingClient.forwardGeocode({
-    query: location + country,
+    query: `${location} + ${country}`,
     limit: 1
   }).send();
 
