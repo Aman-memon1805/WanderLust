@@ -28,7 +28,7 @@ const initDb = async ()=>{
       listing.geometry = resp.body.features[0].geometry;
     }
 
-    initData.data = initData.data.map((obj)=> ({...obj,owner : '6a450141a1c79ccca88ac535'}));
+    initData.data = initData.data.map((obj)=> ({...obj,owner : '6a4f8927861d29b8395218bb'}));
     await Listing.insertMany(initData.data);
     console.log("Added all listings");
 }
