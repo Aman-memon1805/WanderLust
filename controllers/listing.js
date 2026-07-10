@@ -26,7 +26,7 @@ module.exports.newListingform = async (req, res) => {
 
 module.exports.createNewListing = async (req, res, next) => { 
   
-  let { title, description, price, location, country } = req.body; 
+  let { title, description, category , price, location, country } = req.body; 
   let url = req.file.path;
   let filename = req.file.filename;
 
@@ -41,7 +41,8 @@ module.exports.createNewListing = async (req, res, next) => {
     description: description, 
     location: location, 
     price: price, 
-    country: country, 
+    country: country,
+    category : category, 
   });
   newListing.owner = req.user._id;
   newListing.geometry = resp.body.features[0].geometry;
@@ -75,7 +76,7 @@ module.exports.showListing = async (req, res, next) => {
 
 module.exports.updateListing = async (req, res) => { 
   let { id } = req.params; 
-  let { title, description, price, location, country } = req.body; 
+  let { title, description,category, price, location, country } = req.body; 
 
   let resp = await geocodingClient.forwardGeocode({
     query: `${location} + ${country}`,
@@ -88,6 +89,7 @@ module.exports.updateListing = async (req, res) => {
     location: location, 
     price: price, 
     country: country, 
+    category : category,
   }, { new: true }); 
 
   listing.geometry = resp.body.features[0].geometry;
