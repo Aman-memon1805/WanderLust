@@ -76,6 +76,10 @@ async function main() {
   await mongoose.connect(process.env.ATLASDB_URL);
 }
 
+app.get("/", (req,res)=>{
+  res.redirect("/listings");  // home page redirect to listings
+});
+
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
